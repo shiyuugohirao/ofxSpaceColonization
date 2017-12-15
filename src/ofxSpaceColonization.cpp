@@ -43,8 +43,13 @@ void ofxSpaceColonization::build(){
     shared_ptr<ofxSpaceColonizationBranch> root(new ofxSpaceColonizationBranch(options.rootPosition, endPoint, orientation, glm::vec3(0.0f, 1.0f, 0.0f), options.radius));
     branches.push_back(root);
 
-    for (auto vec:this->leaves_positions) {
-        leaves.push_back(ofxSpaceColonizationLeaf(vec));
+//    for (auto vec:this->leaves_positions) {
+//        leaves.push_back(ofxSpaceColonizationLeaf(vec,i));
+//    }
+    //## changed to add leafID
+    for(int i=0; i<leaves_positions.size();i++){
+        ofxSpaceColonizationLeaf leaf(leaves_positions[i],i);
+        leaves.push_back(leaf);
     }
 
     auto current = root;
@@ -131,11 +136,11 @@ void ofxSpaceColonization::grow(glm::vec3 wind){
                     break;
                 } else if (distance > options.maxDist){
                     //break;
-                } else if ((closestBranchIndex < 0) || (distance < record)){
+                } else if ((closestBranchIndex < 0) || (distance < record)){    //枝一本ずつ確認して最短の枝IDと距離を代入
                     closestBranchIndex = i;
                     record = distance;
                 }
-            }
+            }   // for branch end
 
             //adjust direction and count
             if (closestBranchIndex>=0 && !leaves[it].isReached()) {
@@ -155,7 +160,7 @@ void ofxSpaceColonization::grow(glm::vec3 wind){
 
             if (leaves[it].isReached()) {
                 // TODO, maybe you can keep the leaves and draw just that one that get reached?
-                leaves.erase(leaves.begin()+it);
+                // leaves.erase(leaves.begin()+it);
             }
         }
 

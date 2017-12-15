@@ -1,3 +1,0 @@
-ofxBranchesPrimitive
-ofxGui
-ofxSpaceColonization
